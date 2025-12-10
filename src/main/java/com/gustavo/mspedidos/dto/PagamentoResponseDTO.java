@@ -1,4 +1,7 @@
 package com.gustavo.mspedidos.dto;
 
-public class PagamentoResponseDTO {
+public record PagamentoResponseDTO(
+        Long id,
+        String status
+) {
 }

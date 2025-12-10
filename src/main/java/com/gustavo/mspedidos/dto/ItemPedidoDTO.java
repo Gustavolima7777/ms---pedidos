@@ -1,4 +1,4 @@
 package com.gustavo.mspedidos.dto;
 
-public class ItemPedidoDTO {
+public record ItemPedidoDTO(Long produtoId, Integer quantidade) {
 }

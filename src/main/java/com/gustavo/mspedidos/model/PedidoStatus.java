@@ -1,4 +1,8 @@
 package com.gustavo.mspedidos.model;
 
-public class PedidoStatus {
+public enum PedidoStatus {
+    AGUARDANDO_PAGAMENTO,
+    PAGO,
+    RECUSADO,
+    CANCELADO
 }
