@@ -5,10 +5,7 @@ import com.gustavo.mspedidos.dto.PagamentoRequestDTO;
 import com.gustavo.mspedidos.dto.PagamentoResponseDTO;
 import com.gustavo.mspedidos.dto.PedidoRequestDTO;
 import com.gustavo.mspedidos.dto.PedidoResponseDTO;
-import com.gustavo.mspedidos.model.Cliente;
-import com.gustavo.mspedidos.model.ItemPedido;
-import com.gustavo.mspedidos.model.Pedido;
-import com.gustavo.mspedidos.model.Produto;
+import com.gustavo.mspedidos.model.*;
 import com.gustavo.mspedidos.repository.ClienteRepository;
 import com.gustavo.mspedidos.repository.PedidoRepository;
 import com.gustavo.mspedidos.repository.ProdutoRepository;
@@ -119,8 +116,13 @@ public class PedidoServiceImpl implements PedidoService {
             throw new RuntimeException("Erro ao processar pagamento para o pedido " + pedido.getId());
         }
 
-        // Se quisesse armazenar algo do pagamento no pedido,
-        // precisaríamos criar um campo na entidade Pedido.
-        // Como o professor não pediu, só garantimos que o pagamento foi feito.
+        // NOVA LÓGICA: Atualiza o status do pedido baseado na resposta do pagamento
+        if ("APROVADO".equals(response.status().toString())) {
+            pedido.setStatus(PedidoStatus.PAGO);
+            pedidoRepository.save(pedido); // Salva a atualização no banco
+        } else if ("RECUSADO".equals(response.status().toString())) {
+            pedido.setStatus(PedidoStatus.RECUSADO);
+            pedidoRepository.save(pedido);
+        }
     }
 }
